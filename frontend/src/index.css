@@ -1,0 +1,843 @@
+/**
+ * LMIS Forecasting Engine — Institutional Design System
+ * Inspired by GovSync reference benchmark & leading public policy platforms
+ *
+ * Core Characteristics:
+ * - Warm parchment/cream background (#FBF8F3 / #F8F5EE)
+ * - Restrained, cohesive typography (Lora serif headings + Inter body + JetBrains Mono tabular numerals)
+ * - Signature terracotta/rust accent (#C2410C / #B43403)
+ * - Understated thin warm borders (#E7E5E4), small radii (4px-6px), flat/subtle elevation
+ * - High-density analytical composition without generic AI-dashboard cards or decorative gradients
+ */
+
+:root {
+  /* Warm Institutional Palette */
+  --bg-parchment: #fbf8f3;
+  --bg-surface: #ffffff;
+  --bg-surface-subtle: #f8f6f0;
+  --bg-surface-elevated: #f4efe6;
+
+  /* Stone & Charcoal Neutrals */
+  --stone-900: #1c1917; /* Primary ink text */
+  --stone-800: #292524;
+  --stone-700: #44403c; /* Secondary text */
+  --stone-600: #57534e;
+  --stone-500: #78716c; /* Muted annotations */
+  --stone-400: #a8a29e;
+  --stone-300: #d6d3d1;
+  --stone-200: #e7e5e4; /* Primary structural border */
+  --stone-100: #f5f5f4;
+  --stone-50: #fafaf9;
+
+  /* Editorial Accent: GovSync Rust / Terracotta */
+  --rust-700: #9a3412;
+  --rust-600: #c2410c;
+  --rust-500: #ea580c;
+  --rust-100: #ffedd5;
+  --rust-50: #fff7ed;
+
+  /* Analytical Metric Semantics (Restrained, Non-alarmist) */
+  --metric-demand: #1e3a8a;       /* Deep Slate Blue */
+  --metric-demand-bg: #eff6ff;
+  --metric-demand-border: #bfdbfe;
+
+  --metric-supply: #0f766e;       /* Forest Teal */
+  --metric-supply-bg: #f0fdfa;
+  --metric-supply-border: #99f6e4;
+
+  --shortage-rust: #c2410c;       /* Terracotta Shortage */
+  --shortage-rust-bg: #fff7ed;
+  --shortage-rust-border: #fed7aa;
+
+  --oversupply-indigo: #4338ca;   /* Deep Indigo Oversupply */
+  --oversupply-indigo-bg: #eef2ff;
+  --oversupply-indigo-border: #c7d2fe;
+
+  --balanced-green: #15803d;      /* Deep Olive/Green */
+  --balanced-green-bg: #f0fdf4;
+  --balanced-green-border: #bbf7d0;
+
+  --synthetic-amber: #b45309;     /* Warm Amber for Synthetic Caveats */
+  --synthetic-amber-bg: #fffbeb;
+  --synthetic-amber-border: #fde68a;
+
+  /* Typography */
+  --font-serif: 'Lora', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', var(--font-sans);
+  --font-mono: 'JetBrains Mono', Consolas, monospace;
+
+  /* Restrained Geometry */
+  --radius-xs: 3px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  /* Subtle, Whisper Elevation (No heavy floating shadows) */
+  --shadow-subtle: 0 1px 2px rgba(28, 25, 23, 0.04);
+  --shadow-card: 0 1px 3px rgba(28, 25, 23, 0.05), 0 1px 2px rgba(28, 25, 23, 0.03);
+  --shadow-drawer: -6px 0 24px rgba(28, 25, 23, 0.12);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font-sans);
+  background-color: var(--bg-parchment);
+  color: var(--stone-900);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   Top Masthead & Header (GovSync Reference Layout)
+   ========================================================================== */
+
+.top-masthead {
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--stone-200);
+  box-shadow: var(--shadow-subtle);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+/* Accessibility / Utility Ribbon */
+.masthead-utility-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  padding: 4px 32px;
+  background-color: #f7f3ea;
+  border-bottom: 1px solid rgba(231, 229, 228, 0.6);
+  font-size: 11px;
+  color: var(--stone-600);
+}
+
+.text-sizer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--stone-600);
+}
+
+.text-sizer span {
+  cursor: pointer;
+  padding: 1px 4px;
+  border-radius: 2px;
+}
+
+.text-sizer span:hover {
+  background-color: var(--stone-200);
+  color: var(--stone-900);
+}
+
+/* Main Masthead Banner */
+.masthead-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 32px;
+  gap: 24px;
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-logo-img {
+  width: 44px;
+  height: 44px;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: block;
+}
+
+.sidebar-logo-img {
+  width: 32px;
+  height: 32px;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: block;
+}
+
+.brand-emblem-seal {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1.5px solid var(--rust-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--rust-700);
+  box-shadow: 0 1px 3px rgba(194, 65, 12, 0.15);
+  flex-shrink: 0;
+}
+
+.brand-text-group h1 {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--stone-900);
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+.brand-text-group .brand-sub {
+  font-size: 11.5px;
+  color: var(--stone-600);
+  font-weight: 500;
+}
+
+/* Primary Navigation Menu (With GovSync rust underline indicator) */
+.masthead-nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.nav-link-btn {
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--stone-700);
+  cursor: pointer;
+  padding: 8px 0;
+  position: relative;
+  transition: color 0.15s ease;
+  white-space: nowrap;
+}
+
+.nav-link-btn:hover {
+  color: var(--stone-900);
+}
+
+.nav-link-btn.active {
+  color: var(--stone-900);
+  font-weight: 700;
+}
+
+.nav-link-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -13px; /* sits cleanly on the masthead bottom border */
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  background-color: var(--rust-600);
+  border-radius: 2px 2px 0 0;
+}
+
+/* Right Section of Masthead */
+.masthead-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.data-status-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: var(--radius-xs);
+  font-size: 10.5px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background-color: var(--synthetic-amber-bg);
+  border: 1px solid var(--synthetic-amber-border);
+  color: var(--synthetic-amber);
+}
+
+.data-status-tag .pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--synthetic-amber);
+}
+
+.pilot-scope-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--stone-600);
+  background-color: var(--stone-100);
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--stone-200);
+  font-weight: 500;
+}
+
+.pilot-scope-tag .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--metric-supply);
+}
+
+/* ==========================================================================
+   Contextual Workspace Ribbon (Breadcrumbs & Analytical Filters)
+   ========================================================================== */
+
+.workspace-ribbon {
+  background-color: #f7f3ea;
+  border-bottom: 1px solid var(--stone-200);
+  padding: 8px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ribbon-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--stone-600);
+}
+
+.ribbon-breadcrumb a, .ribbon-breadcrumb span.sep {
+  color: var(--stone-400);
+}
+
+.ribbon-breadcrumb strong {
+  color: var(--stone-900);
+  font-weight: 600;
+}
+
+.ribbon-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ribbon-filter {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #ffffff;
+  border: 1px solid var(--stone-300);
+  border-radius: var(--radius-xs);
+  padding: 4px 8px;
+  font-size: 12px;
+  color: var(--stone-700);
+}
+
+.ribbon-filter label {
+  font-size: 11px;
+  color: var(--stone-500);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.ribbon-filter select {
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--stone-900);
+  outline: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* ==========================================================================
+   Editorial Content Layout
+   ========================================================================== */
+
+.editorial-viewport {
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 32px 56px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Editorial Section Heading with GovSync Terracotta Underline */
+.editorial-heading-group {
+  margin-bottom: 6px;
+}
+
+.editorial-heading-group h2,
+.editorial-heading-group h3 {
+  font-family: var(--font-serif);
+  color: var(--stone-900);
+  letter-spacing: -0.01em;
+}
+
+.editorial-heading-group h2 {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.editorial-heading-group h3 {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.editorial-heading-group .heading-accent-bar {
+  width: 36px;
+  height: 2.5px;
+  background-color: var(--rust-600);
+  margin-top: 6px;
+  border-radius: 1px;
+}
+
+.editorial-heading-group p {
+  font-size: 13px;
+  color: var(--stone-600);
+  margin-top: 6px;
+  max-width: 880px;
+  line-height: 1.5;
+}
+
+/* Demonstration Notice (Restrained, Institutional) */
+.editorial-notice-strip {
+  background-color: #fffbeb;
+  border: 1px solid #fde68a;
+  border-left: 3px solid #d97706;
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 12px;
+  color: #78350f;
+  line-height: 1.5;
+}
+
+.editorial-notice-strip strong {
+  color: #92400e;
+}
+
+/* ==========================================================================
+   Key Indicators Ledger (Replaces generic SaaS KPI cards)
+   ========================================================================== */
+
+.indicators-ledger {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--stone-200);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-subtle);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  overflow: hidden;
+}
+
+.ledger-cell {
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--stone-200);
+  background-color: #ffffff;
+}
+
+.ledger-cell:last-child {
+  border-right: none;
+}
+
+.ledger-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--stone-500);
+  margin-bottom: 6px;
+}
+
+.ledger-num-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.ledger-number {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--stone-900);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.ledger-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: var(--radius-xs);
+  font-family: var(--font-mono);
+}
+
+.ledger-badge.shortage {
+  background-color: var(--shortage-rust-bg);
+  color: var(--shortage-rust);
+  border: 1px solid var(--shortage-rust-border);
+}
+
+.ledger-badge.surplus {
+  background-color: var(--oversupply-indigo-bg);
+  color: var(--oversupply-indigo);
+  border: 1px solid var(--oversupply-indigo-border);
+}
+
+.ledger-badge.balanced {
+  background-color: var(--balanced-green-bg);
+  color: var(--balanced-green);
+  border: 1px solid var(--balanced-green-border);
+}
+
+.ledger-badge.neutral {
+  background-color: var(--metric-demand-bg);
+  color: var(--metric-demand);
+  border: 1px solid var(--metric-demand-border);
+}
+
+.ledger-desc {
+  font-size: 11.5px;
+  color: var(--stone-600);
+  line-height: 1.4;
+  margin-top: 4px;
+}
+
+.ledger-guardrail {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--stone-400);
+  margin-top: 6px;
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   Analytical Cards & Tables (High Density, Thin Borders)
+   ========================================================================== */
+
+.editorial-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--stone-200);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-subtle);
+  padding: 20px 24px;
+}
+
+.editorial-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+  border-bottom: 1px solid var(--stone-100);
+  padding-bottom: 12px;
+}
+
+.table-wrapper-refined {
+  overflow-x: auto;
+  border: 1px solid var(--stone-200);
+  border-radius: var(--radius-xs);
+  background-color: #ffffff;
+}
+
+.editorial-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 12.5px;
+}
+
+.editorial-table th {
+  background-color: var(--bg-surface-subtle);
+  color: var(--stone-700);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--stone-200);
+  white-space: nowrap;
+}
+
+.editorial-table th.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.editorial-table th.sortable:hover {
+  background-color: var(--stone-200);
+  color: var(--stone-900);
+}
+
+.editorial-table td {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--stone-200);
+  color: var(--stone-800);
+  vertical-align: middle;
+}
+
+.editorial-table tbody tr:hover {
+  background-color: #faf8f5;
+}
+
+.editorial-table tbody tr.clickable-row {
+  cursor: pointer;
+}
+
+.num-val {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  font-weight: 500;
+}
+
+.num-val.bold {
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   Two-Column Grids & Inspection Panes
+   ========================================================================== */
+
+.editorial-two-col {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 20px;
+}
+
+/* Early Warning & Risk Cards */
+.risk-item-card {
+  border: 1px solid var(--stone-200);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  background-color: #ffffff;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.risk-item-card.shortage {
+  border-left: 3.5px solid var(--shortage-rust);
+}
+
+.risk-item-card.oversupply {
+  border-left: 3.5px solid var(--oversupply-indigo);
+}
+
+.risk-item-card.warning {
+  border-left: 3.5px solid var(--synthetic-amber);
+}
+
+.risk-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.risk-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--stone-900);
+}
+
+.risk-evidence {
+  font-size: 12px;
+  color: var(--stone-700);
+  line-height: 1.45;
+}
+
+.risk-caveat {
+  font-size: 11px;
+  color: var(--stone-500);
+  background-color: var(--stone-50);
+  padding: 5px 8px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--stone-200);
+}
+
+.risk-action {
+  font-size: 11.5px;
+  color: #115e59;
+  background-color: var(--metric-supply-bg);
+  border: 1px solid var(--metric-supply-border);
+  padding: 6px 10px;
+  border-radius: var(--radius-xs);
+  margin-top: 4px;
+}
+
+/* Button & Form Controls */
+.gov-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-xs);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.12s ease;
+  font-family: inherit;
+  border: 1px solid transparent;
+}
+
+.gov-btn-primary {
+  background-color: var(--rust-600);
+  color: #ffffff;
+}
+
+.gov-btn-primary:hover {
+  background-color: var(--rust-700);
+}
+
+.gov-btn-outline {
+  background-color: #ffffff;
+  border-color: var(--stone-300);
+  color: var(--stone-800);
+}
+
+.gov-btn-outline:hover {
+  background-color: var(--stone-100);
+  border-color: var(--stone-400);
+}
+
+/* Factsheet Drawer */
+.factsheet-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(28, 25, 23, 0.45);
+  z-index: 90;
+  backdrop-filter: blur(2px);
+}
+
+.factsheet-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 520px;
+  max-width: 90vw;
+  background-color: #ffffff;
+  box-shadow: var(--shadow-drawer);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--stone-300);
+  animation: drawerSlide 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes drawerSlide {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.drawer-header {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--stone-200);
+  background-color: var(--bg-surface-subtle);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.drawer-header h3 {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--stone-900);
+}
+
+.drawer-body {
+  padding: 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Footer (Institutional Standard) */
+.editorial-footer {
+  background-color: #ffffff;
+  border-top: 1px solid var(--stone-200);
+  padding: 16px 32px;
+  margin-top: auto;
+  font-size: 11.5px;
+  color: var(--stone-600);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+  .indicators-ledger {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .ledger-cell:nth-child(2) {
+    border-right: none;
+  }
+  .ledger-cell:nth-child(1), .ledger-cell:nth-child(2) {
+    border-bottom: 1px solid var(--stone-200);
+  }
+  .editorial-two-col {
+    grid-template-columns: 1fr;
+  }
+  .masthead-nav {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .masthead-main {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 14px 16px;
+    gap: 12px;
+  }
+  .masthead-nav {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 6px;
+  }
+  .indicators-ledger {
+    grid-template-columns: 1fr;
+  }
+  .ledger-cell {
+    border-right: none;
+    border-bottom: 1px solid var(--stone-200);
+  }
+  .editorial-viewport {
+    padding: 16px;
+  }
+  .workspace-ribbon {
+    padding: 8px 16px;
+  }
+}

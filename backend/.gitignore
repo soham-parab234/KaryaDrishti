@@ -1,0 +1,17 @@
+# Backend specific gitignore
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.pytest_cache/
+.coverage
+htmlcov/
+*.db
+*.sqlite
+*.sqlite3
+data/*.db
+data/*.sqlite3
+.env
+.env.*
+*.env
