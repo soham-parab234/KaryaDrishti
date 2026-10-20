@@ -8,8 +8,13 @@
  * - Clear data status classification (LIVE_BACKEND vs SYNTHETIC_DEMO)
  */
 
+const isLocalDevelopment =
+  typeof window !== 'undefined' &&
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+
 export const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || (typeof window !== 'undefined' ? '' : 'http://127.0.0.1:8000');
+  import.meta.env.VITE_API_BASE_URL ||
+  (isLocalDevelopment ? '' : 'https://lmis-forecasting-engine.onrender.com');
 
 import type { RecommendationListResponse, AiQueryRequest, AiQueryResponse } from '../types/lmis';
 
@@ -289,7 +294,7 @@ class ApiClient {
           }
         } catch {
           if (response.status === 502) {
-            errMessage = 'Service temporarily unavailable (HTTP 502 Bad Gateway). Unable to reach the backend intelligence engine. Please verify that the LMIS FastAPI backend server is running on http://127.0.0.1:8000.';
+            errMessage = 'Service temporarily unavailable (HTTP 502 Bad Gateway). Unable to reach the backend intelligence engine. Please check the deployed LMIS backend URL and browser CORS configuration.';
           } else if (response.status === 503) {
             errMessage = 'Service temporarily unavailable (HTTP 503). The intelligence engine is currently initializing or undergoing maintenance.';
           }
