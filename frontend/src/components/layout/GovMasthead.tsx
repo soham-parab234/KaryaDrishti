@@ -69,14 +69,14 @@ export const GovMasthead: React.FC<GovMastheadProps> = ({
       <div className="masthead-main">
         <div className="brand-section">
           <img
-            src="/lmis-logo.png"
-            alt="LMIS — Labour Market Intelligence System Logo"
+            src="/logo.png"
+            alt="KaryaDrishti — Labour Market Intelligence Logo"
             className="brand-logo-img"
           />
           <div className="brand-text-group">
-            <h1>LMIS — Labour Market Intelligence System</h1>
+            <h1>KaryaDrishti</h1>
             <div className="brand-sub">
-              Skill Demand–Supply Intelligence, Predictive Forecasting &amp; Policy Decision Support
+              Labour Market Intelligence · Skill Demand–Supply Forecasting &amp; Policy Decision Support
             </div>
           </div>
         </div>

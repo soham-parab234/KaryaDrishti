@@ -119,7 +119,7 @@ export const AiAssistantView: React.FC<AiAssistantViewProps> = ({
         const msg =
           err instanceof Error
             ? err.message
-            : 'Communication failure: Unable to connect to the LMIS AI Assistant endpoint.';
+            : 'Communication failure: Unable to connect to the KaryaDrishti AI Assistant endpoint.';
         setRequestError(msg);
       } finally {
         setIsLoading(false);
@@ -526,7 +526,7 @@ export const AiAssistantView: React.FC<AiAssistantViewProps> = ({
                 letterSpacing: '0.03em',
               }}
             >
-              Ask the LMIS Forecasting Engine
+              Ask the KaryaDrishti Assistant
             </label>
 
             <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
@@ -689,7 +689,7 @@ export const AiAssistantView: React.FC<AiAssistantViewProps> = ({
             >
               <Loader2 size={28} style={{ color: 'var(--rust-600)', animation: 'spin 1s linear infinite' }} />
               <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--stone-800)' }}>
-                Retrieving verified LMIS time series &amp; synthesizing analysis...
+                Retrieving verified time series &amp; synthesizing analysis...
               </div>
               <div style={{ fontSize: '12px', color: 'var(--stone-500)', maxWidth: '480px' }}>
                 Scanning DemandObservation, QualifiedSupplyEstimate, TrainingCapacityOutcome, and ForecastRun models.

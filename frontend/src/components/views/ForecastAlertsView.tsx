@@ -299,7 +299,7 @@ export const ForecastAlertsView: React.FC<ForecastAlertsViewProps> = ({
           </div>
           <div className="heading-accent-bar"></div>
           <p>
-            In accordance with <strong>LMIS analytical methodology (Section 9)</strong>, forecasting begins with transparent baselines 
+            In accordance with <strong>KaryaDrishti analytical methodology (Section 9)</strong>, forecasting begins with transparent baselines 
             (Moving Average and Naïve last value). Candidate models (ETS / ARIMA) are evaluated on chronological holdout splits strictly prior to 
             test periods (zero future data leakage). <em>Evaluation metrics below are computed live from chronological observations.</em>
           </p>

@@ -64,12 +64,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="sidebar-header">
         <div className="sidebar-brand">
           <img
-            src="/lmis-logo.png"
-            alt="LMIS Logo"
+            src="/logo.png"
+            alt="KaryaDrishti Logo"
             className="sidebar-logo-img"
           />
           <div className="sidebar-title-group">
-            <h1>LMIS</h1>
+            <h1>KaryaDrishti</h1>
             <span className="sub-label">Labour Market Intelligence</span>
           </div>
           {mobileOpen && (

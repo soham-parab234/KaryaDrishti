@@ -233,7 +233,7 @@ interface IngestionBatchItem {
       if (liveGaps && liveGaps.length > 0) {
         const hasImported = liveGaps.some((g) => g.data_status === 'IMPORTED');
         const headers = [
-          '# LMIS FORECASTING ENGINE - MAHARASHTRA LABOUR MARKET GAP REPORT',
+          '# KARYADRISHTI PLATFORM - MAHARASHTRA LABOUR MARKET GAP REPORT',
           `# DATA STATUS: ${hasImported ? 'HYBRID (CONTAINS VERIFIED IMPORTED DEMAND OBSERVATIONS)' : 'CALIBRATED SYNTHETIC BASELINE DATA'}`,
           '# GENERATION TIMESTAMP: ' + new Date().toISOString(),
           '# DOMAIN GUARDRAILS: Confirmed demand reflects approved employer postings. Unapproved postings excluded.',
@@ -259,7 +259,7 @@ interface IngestionBatchItem {
         const csvContent = 'data:text/csv;charset=utf-8,' + encodeURIComponent([...headers, ...rows].join('\n'));
         const link = document.createElement('a');
         link.setAttribute('href', csvContent);
-        link.setAttribute('download', `LMIS_Live_Gap_Dataset_${new Date().toISOString().slice(0, 10)}.csv`);
+        link.setAttribute('download', `KaryaDrishti_Live_Gap_Dataset_${new Date().toISOString().slice(0, 10)}.csv`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -273,7 +273,7 @@ interface IngestionBatchItem {
     }
 
     const headers = [
-      '# LMIS FORECASTING ENGINE - MAHARASHTRA PILOT DATASET',
+      '# KARYADRISHTI PLATFORM - MAHARASHTRA PILOT DATASET',
       '# DATA STATUS: CALIBRATED SYNTHETIC BASELINE DATA',
       '# GENERATION TIMESTAMP: ' + new Date().toISOString(),
       '# NOTICE: Calibrated baseline dataset. Real public systems remain planned connectors.',
@@ -299,12 +299,12 @@ interface IngestionBatchItem {
     const csvContent = 'data:text/csv;charset=utf-8,' + encodeURIComponent([...headers, ...rows].join('\n'));
     const link = document.createElement('a');
     link.setAttribute('href', csvContent);
-    link.setAttribute('download', 'LMIS_Maharashtra_Pilot_Synthetic_Dataset.csv');
+    link.setAttribute('download', 'KaryaDrishti_Maharashtra_Pilot_Synthetic_Dataset.csv');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 
-    setDownloadNotice('Downloaded LMIS_Maharashtra_Pilot_Synthetic_Dataset.csv with mandatory synthetic disclaimers.');
+    setDownloadNotice('Downloaded KaryaDrishti_Maharashtra_Pilot_Synthetic_Dataset.csv with mandatory synthetic disclaimers.');
     setTimeout(() => setDownloadNotice(null), 5000);
   };
 
@@ -314,7 +314,7 @@ interface IngestionBatchItem {
       const content = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(logs, null, 2));
       const link = document.createElement('a');
       link.setAttribute('href', content);
-      link.setAttribute('download', `LMIS_Cryptographic_Audit_Trail_${new Date().toISOString().slice(0, 10)}.json`);
+      link.setAttribute('download', `KaryaDrishti_Cryptographic_Audit_Trail_${new Date().toISOString().slice(0, 10)}.json`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
