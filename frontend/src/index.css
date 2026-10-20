@@ -12,26 +12,35 @@
 
 :root {
   /* Warm Institutional Palette */
-  --bg-parchment: #fbf8f3;
-  --bg-surface: #ffffff;
+  --bg-parchment: #FBF4E7;
+  --bg-page: #FBF4E7;
+  --bg-surface: #FFFDF9;
+  --bg-card: #FFFDF9;
   --bg-surface-subtle: #f8f6f0;
   --bg-surface-elevated: #f4efe6;
 
   /* Stone & Charcoal Neutrals */
-  --stone-900: #1c1917; /* Primary ink text */
+  --stone-900: #142D3A;
+  --color-navy: #142D3A; /* Primary ink text */
   --stone-800: #292524;
   --stone-700: #44403c; /* Secondary text */
   --stone-600: #57534e;
   --stone-500: #78716c; /* Muted annotations */
   --stone-400: #a8a29e;
   --stone-300: #d6d3d1;
-  --stone-200: #e7e5e4; /* Primary structural border */
+  --stone-200: #E7DED0;
+  --color-border: #E7DED0;
+  --color-text-sec: #6F716E;
+  --color-peach: #F7D9B7; /* Primary structural border */
   --stone-100: #f5f5f4;
   --stone-50: #fafaf9;
 
   /* Editorial Accent: GovSync Rust / Terracotta */
   --rust-700: #9a3412;
-  --rust-600: #c2410c;
+  --rust-600: #B94120;
+  --rust-700: #96341C;
+  --color-terracotta: #B94120;
+  --color-terracotta-hover: #96341C;
   --rust-500: #ea580c;
   --rust-100: #ffedd5;
   --rust-50: #fff7ed;
@@ -41,7 +50,8 @@
   --metric-demand-bg: #eff6ff;
   --metric-demand-border: #bfdbfe;
 
-  --metric-supply: #0f766e;       /* Forest Teal */
+  --metric-supply: #356B55;
+  --color-supply: #356B55;       /* Forest Teal */
   --metric-supply-bg: #f0fdfa;
   --metric-supply-border: #99f6e4;
 

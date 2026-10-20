@@ -1,5 +1,5 @@
-# AI-Enabled Labour Market Intelligence & Skill Demand-Supply Forecasting Engine (LMIS)
-### National Planning & Decision Support Platform
+# KaryaDrishti — Labour market intelligence
+### AI-Enabled Labour Market Intelligence & Skill Demand-Supply Forecasting Engine
 
 An evidence-based decision-support platform designed for state skill development missions, labour-market economists, and vocational training planners. The platform ingests employer hiring signals, normalizes job postings against the National Classification of Occupations (NCO-2015), calculates demand-supply shortages and oversupplies, projects future skill requirements using chronological forecasting, raises early-warning alerts, and simulates training-seat interventions.
 

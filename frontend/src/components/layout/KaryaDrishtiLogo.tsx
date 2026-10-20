@@ -1,7 +1,7 @@
 import React from 'react';
 
-interface KaryaDrishtiLogoProps {
-  variant?: 'login' | 'header' | 'compact';
+export interface KaryaDrishtiLogoProps {
+  variant?: 'login' | 'header' | 'compact' | 'mobile';
   height?: number;
   className?: string;
   showSubtitle?: boolean;
@@ -9,9 +9,12 @@ interface KaryaDrishtiLogoProps {
 
 /**
  * Official KaryaDrishti Brand Logo Component
- * 
- * Uses the official logo asset from /logo.png, preserving 100% of the
- * aspect ratio, colors, emblem artwork, and Lora serif typography.
+ *
+ * Sizing requirements:
+ * - Desktop header: ~44–56px high
+ * - Login page brand: ~56–76px high
+ * - Mobile header: ~38–46px high
+ * Uses object-fit: contain to preserve aspect ratio without clipping or distortion.
  */
 export const KaryaDrishtiLogo: React.FC<KaryaDrishtiLogoProps> = ({
   variant = 'header',
@@ -20,7 +23,11 @@ export const KaryaDrishtiLogo: React.FC<KaryaDrishtiLogoProps> = ({
   showSubtitle = true,
 }) => {
   const isLogin = variant === 'login';
-  const defaultHeight = isLogin ? 56 : variant === 'compact' ? 34 : 40;
+  const isMobile = variant === 'mobile';
+  const isCompact = variant === 'compact';
+
+  // Sizing adhering to Phase 3 design guidelines
+  const defaultHeight = isLogin ? 64 : isMobile ? 42 : isCompact ? 36 : 48;
   const logoHeight = height || defaultHeight;
 
   return (
@@ -33,12 +40,12 @@ export const KaryaDrishtiLogo: React.FC<KaryaDrishtiLogoProps> = ({
         userSelect: 'none',
       }}
       role="banner"
-      aria-label="KaryaDrishti — Labour Market Intelligence"
+      aria-label="KaryaDrishti — Labour market intelligence"
     >
-      {/* Official KaryaDrishti logo asset */}
+      {/* Official KaryaDrishti Logo Asset */}
       <img
-        src="/logo.png"
-        alt="KaryaDrishti — Labour Market Intelligence Emblem"
+        src="/assets/karya-drishti-logo.png"
+        alt="KaryaDrishti Emblem"
         style={{
           height: `${logoHeight}px`,
           width: 'auto',
@@ -48,27 +55,27 @@ export const KaryaDrishtiLogo: React.FC<KaryaDrishtiLogoProps> = ({
         }}
       />
 
-      {/* Vertical separator on login page matching Image 1 */}
+      {/* Subtle vertical divider on login page matching Reference Image 1 */}
       {isLogin && (
         <div
           style={{
             width: '1px',
-            height: '42px',
-            backgroundColor: '#d6d3d1',
+            height: '46px',
+            backgroundColor: 'var(--color-border, #E7DED0)',
             margin: '0 2px',
           }}
           aria-hidden="true"
         />
       )}
 
-      {/* Official Typography Group */}
+      {/* Brand Typography */}
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
         <span
           style={{
             fontFamily: 'Lora, Georgia, serif',
-            fontSize: isLogin ? '26px' : '20px',
+            fontSize: isLogin ? '26px' : isMobile ? '18px' : '21px',
             fontWeight: 700,
-            color: '#1c1917',
+            color: 'var(--color-navy, #142D3A)',
             lineHeight: 1.15,
             letterSpacing: '-0.01em',
           }}
@@ -78,9 +85,9 @@ export const KaryaDrishtiLogo: React.FC<KaryaDrishtiLogoProps> = ({
         {showSubtitle && (
           <span
             style={{
-              fontFamily: 'Inter, system-ui, sans-serif',
-              fontSize: isLogin ? '12.5px' : '11.5px',
-              color: '#78716c',
+              fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+              fontSize: isLogin ? '13px' : isMobile ? '10.5px' : '11.5px',
+              color: 'var(--color-text-sec, #6F716E)',
               fontWeight: 400,
               letterSpacing: '0.01em',
               marginTop: '2px',
@@ -94,5 +101,6 @@ export const KaryaDrishtiLogo: React.FC<KaryaDrishtiLogoProps> = ({
   );
 };
 
-// Also export as LmisLogo for backward compatibility with existing imports
+// Backward-compatible alias for any legacy imports
 export const LmisLogo = KaryaDrishtiLogo;
+export default KaryaDrishtiLogo;

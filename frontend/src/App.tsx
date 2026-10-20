@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { LoginPage } from './components/views/LoginPage';
 import { DashboardHeader } from './components/layout/DashboardHeader';
+import { LoginPage, type UserSession } from './components/views/LoginPage';
 import { DashboardOverview } from './components/views/DashboardOverview';
 import { OccupationExplorerView } from './components/views/OccupationExplorerView';
 import { ForecastAlertsView } from './components/views/ForecastAlertsView';
@@ -25,41 +25,16 @@ import type {
 } from './types/lmis';
 import './App.css';
 
-interface UserSession {
-  isAuthenticated: boolean;
-  role: string;
-  email: string;
-  mode: 'staff' | 'public';
-}
-
 export function App() {
-  // Session authentication state (defaults to login page unless previously authenticated or specified in hash)
+  // Session authentication state (persisted in localStorage)
   const [session, setSession] = useState<UserSession>(() => {
-    if (typeof window !== 'undefined') {
-      if (window.location.hash === '#login') {
-        return {
-          isAuthenticated: false,
-          role: 'Policy Planner',
-          email: 'planner@karyadrishti.in',
-          mode: 'staff',
-        };
-      }
-      if (window.location.hash === '#dashboard') {
-        return {
-          isAuthenticated: true,
-          role: 'Policy Planner',
-          email: 'planner@karyadrishti.in',
-          mode: 'staff',
-        };
-      }
-      const saved = localStorage.getItem('karyadrishti_session') || localStorage.getItem('lmis_session');
+    try {
+      const saved = localStorage.getItem('karyadrishti_session');
       if (saved) {
-        try {
-          return JSON.parse(saved);
-        } catch {
-          // ignore corrupted storage
-        }
+        return JSON.parse(saved);
       }
+    } catch {
+      // Fallback
     }
     return {
       isAuthenticated: false,
@@ -69,26 +44,13 @@ export function App() {
     };
   });
 
-  const [currentView, setCurrentView] = useState<NavigationView>(() => {
-    if (typeof window !== 'undefined') {
-      const hash = window.location.hash;
-      if (hash === '#forecasts') return 'forecasts';
-      if (hash === '#scenarios') return 'scenarios';
-      if (hash === '#occupations' || hash === '#skills') return 'occupations';
-      if (hash === '#reports') return 'reports';
-      if (hash === '#assistant') return 'assistant';
-    }
-    return 'overview';
-  });
+  const [currentView, setCurrentView] = useState<NavigationView>('overview');
   const [selectedDistrict, setSelectedDistrict] = useState<PilotDistrict>('All Districts');
   const [selectedSector, setSelectedSector] = useState<string>('ALL');
-  const [selectedCycle, setSelectedCycle] = useState<string>('oct26');
-
-  // Analytical datasets connected to backend with synthetic fallbacks
   const [occupations, setOccupations] = useState<OccupationSummary[]>(SYNTHETIC_OCCUPATIONS);
   const [alerts, setAlerts] = useState<EarlyWarningSignal[]>(SYNTHETIC_ALERTS);
 
-  // Fetch backend analytics if operational
+  // Load live backend indicators if API is running
   useEffect(() => {
     let isMounted = true;
     const loadBackendData = async () => {
@@ -100,14 +62,14 @@ export function App() {
             const match = gaps.find(
               (g) =>
                 g.nco_code === baseOcc.ncoCode &&
-                g.district_code === (baseOcc.district === 'Pune' ? 'MH_PUN' : 'MH_NSK')
+                (g.district_code === (baseOcc.district === 'Pune' ? 'MH_PUN' : 'MH_NSK'))
             );
             if (match) {
               const isShortage = match.absolute_gap > 0;
               const dynamicRisk: RiskLevel = isShortage
-                ? match.gap_rate_pct !== null && match.gap_rate_pct > 25
-                  ? 'CRITICAL_SHORTAGE'
-                  : 'MODERATE_SHORTAGE'
+                ? (match.gap_rate_pct !== null && match.gap_rate_pct > 25
+                    ? 'CRITICAL_SHORTAGE'
+                    : 'MODERATE_SHORTAGE')
                 : match.absolute_gap < -50
                 ? 'POTENTIAL_OVERSUPPLY'
                 : 'BALANCED';
@@ -219,7 +181,6 @@ export function App() {
     setSession(updated);
     try {
       localStorage.setItem('karyadrishti_session', JSON.stringify(updated));
-      localStorage.setItem('lmis_session', JSON.stringify(updated));
       window.location.hash = '#dashboard';
     } catch {
       // ignore
@@ -236,14 +197,13 @@ export function App() {
     setSession(updated);
     try {
       localStorage.removeItem('karyadrishti_session');
-      localStorage.removeItem('lmis_session');
       window.location.hash = '#login';
     } catch {
       // ignore
     }
   };
 
-  // If not authenticated, render the dedicated Login Page matching Image 1
+  // If not authenticated, render the dedicated Login Page matching Reference Image 1
   if (!session.isAuthenticated) {
     return <LoginPage onLogin={handleLogin} />;
   }
@@ -258,7 +218,6 @@ export function App() {
             alerts={alerts}
             selectedDistrict={selectedDistrict}
             selectedSector={selectedSector}
-            selectedCycle={selectedCycle}
             onChangeDistrict={setSelectedDistrict}
             onChangeSector={setSelectedSector}
           />
@@ -312,7 +271,6 @@ export function App() {
             alerts={alerts}
             selectedDistrict={selectedDistrict}
             selectedSector={selectedSector}
-            selectedCycle={selectedCycle}
             onChangeDistrict={setSelectedDistrict}
             onChangeSector={setSelectedSector}
           />
@@ -327,7 +285,7 @@ export function App() {
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
-        background: 'var(--bg-parchment)',
+        background: 'var(--bg-page, #FBF4E7)',
       }}
     >
       {/* Top KaryaDrishti Dashboard Header, Navigation & Global Filter Bar */}
@@ -336,13 +294,11 @@ export function App() {
         onSelectView={handleSelectView}
         onSignOut={handleSignOut}
         roleName={session.role}
-        roleSubtitle={session.mode === 'staff' ? 'Policy Planner' : 'Public Viewer'}
+        roleSubtitle={session.mode === 'staff' ? session.role : 'Public Viewer'}
         selectedDistrict={selectedDistrict}
         onChangeDistrict={setSelectedDistrict}
         selectedSector={selectedSector}
         onChangeSector={setSelectedSector}
-        selectedCycle={selectedCycle}
-        onChangeCycle={setSelectedCycle}
       />
 
       {/* Main Analytical Content Viewport */}

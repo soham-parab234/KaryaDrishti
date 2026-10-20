@@ -1,21 +1,21 @@
 import React from 'react';
 import { KaryaDrishtiLogo } from './KaryaDrishtiLogo';
-import { LogOut, ShieldCheck } from 'lucide-react';
 import type { NavigationView, PilotDistrict } from '../../types/lmis';
+import { LogOut, ShieldCheck, RefreshCw } from 'lucide-react';
 import { useBackendStatus } from '../../hooks/useBackendStatus';
 
 interface DashboardHeaderProps {
   currentView: NavigationView;
   onSelectView: (view: NavigationView) => void;
   onSignOut: () => void;
-  roleName?: string;
+  roleName: string;
   roleSubtitle?: string;
   selectedDistrict: PilotDistrict;
   onChangeDistrict: (district: PilotDistrict) => void;
   selectedSector: string;
   onChangeSector: (sector: string) => void;
-  selectedCycle: string;
-  onChangeCycle: (cycle: string) => void;
+  selectedCycle?: string;
+  onChangeCycle?: (cycle: string) => void;
 }
 
 export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
@@ -28,12 +28,10 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   onChangeDistrict,
   selectedSector,
   onChangeSector,
-  selectedCycle,
-  onChangeCycle,
 }) => {
   const { isConnected, latencyMs, checkConnection } = useBackendStatus();
 
-  const tabs: { id: NavigationView; label: string }[] = [
+  const navTabs: { id: NavigationView; label: string }[] = [
     { id: 'overview', label: 'Overview' },
     { id: 'forecasts', label: 'Forecasts' },
     { id: 'scenarios', label: 'Scenarios' },
@@ -44,36 +42,34 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
 
   return (
     <header className="karya-header-wrapper" role="banner">
-      {/* Top Navbar Row: Logo on Left, Operational Status & Sign Out on Right */}
+      {/* 1. Top Bar: Logo on left, Sign Out and Status on right */}
       <div className="karya-header-top">
         <div className="karya-header-brand">
-          <KaryaDrishtiLogo variant="header" />
+          <KaryaDrishtiLogo variant="header" height={46} />
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          {/* Backend Connection Health Badge */}
-          {isConnected ? (
-            <div
-              className="lmis-status-pill operational"
-              onClick={checkConnection}
-              title={`API Operational (${latencyMs}ms). Database: SQLite.`}
-              role="status"
-            >
-              <span className="pulse-dot active" aria-hidden="true" />
-              <span>API OPERATIONAL</span>
-            </div>
-          ) : (
-            <div
-              className="lmis-status-pill baseline"
-              onClick={checkConnection}
-              title="Running on client-side calibrated baseline dataset. Click to retry connection."
-              role="status"
-            >
-              <span className="pulse-dot baseline" aria-hidden="true" />
-              <span>LOCAL BASELINE</span>
-            </div>
-          )}
+        <div className="karya-header-actions" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          {/* Subtle Backend Status indicator */}
+          <button
+            type="button"
+            className="karya-status-pill"
+            onClick={checkConnection}
+            title={
+              isConnected
+                ? `Operational backend connected (${latencyMs}ms). Database: SQLite`
+                : 'Using local calibrated baseline dataset. Click to retry.'
+            }
+          >
+            <span
+              className="karya-status-dot"
+              style={{ backgroundColor: isConnected ? '#10b981' : '#f59e0b' }}
+              aria-hidden="true"
+            />
+            <span>{isConnected ? 'API Connected' : 'Baseline Mode'}</span>
+            <RefreshCw size={12} className="karya-status-refresh" />
+          </button>
 
+          {/* Sign Out Button matching Reference Image 2 & 3 */}
           <button
             type="button"
             className="karya-signout-btn"
@@ -86,9 +82,9 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
         </div>
       </div>
 
-      {/* Primary Navigation Tabs with Terracotta Underline Indicator */}
-      <nav className="karya-header-nav" aria-label="Main Navigation">
-        {tabs.map((tab) => {
+      {/* 2. Primary Horizontal Navigation Bar matching Reference Image 2 */}
+      <div className="karya-header-nav">
+        {navTabs.map((tab) => {
           const isActive = currentView === tab.id;
           return (
             <button
@@ -102,9 +98,9 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
             </button>
           );
         })}
-      </nav>
+      </div>
 
-      {/* Secondary Context & Global Analytical Filters Bar */}
+      {/* 3. Slim Workspace Strip matching Reference Image 2 & 3 */}
       <div className="karya-subbar">
         <div className="karya-subbar-left">
           <div className="karya-subbar-role">
@@ -112,63 +108,56 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
             <span className="karya-role-desc">{roleSubtitle}</span>
           </div>
 
-          <div className="karya-subbar-divider" aria-hidden="true" />
+          <div className="karya-subbar-divider" />
 
-          {/* Global Filter: District */}
+          {/* District Selector Filter */}
           <div className="karya-header-filter">
-            <label htmlFor="global-district-select">District:</label>
-            <select
-              id="global-district-select"
-              value={selectedDistrict}
-              onChange={(e) => onChangeDistrict(e.target.value as PilotDistrict)}
-              aria-label="Select Pilot District"
-              className="karya-subbar-select"
-            >
-              <option value="All Districts">All Pilot Districts (Pune &amp; Nashik)</option>
-              <option value="Pune">Pune District</option>
-              <option value="Nashik">Nashik District</option>
-            </select>
+            <label htmlFor="workspace-district-select">District:</label>
+            <div className="karya-select-wrapper">
+              <select
+                id="workspace-district-select"
+                value={selectedDistrict}
+                onChange={(e) => onChangeDistrict(e.target.value as PilotDistrict)}
+                className="karya-subbar-select"
+                aria-label="Filter by Pilot District"
+              >
+                <option value="All Districts">All Pilot Districts (Pune &amp; Nashik)</option>
+                <option value="Pune">Pune District</option>
+                <option value="Nashik">Nashik District</option>
+              </select>
+            </div>
           </div>
 
-          {/* Global Filter: Sector */}
+          {/* Sector Selector Filter */}
           <div className="karya-header-filter">
-            <label htmlFor="global-sector-select">Sector:</label>
-            <select
-              id="global-sector-select"
-              value={selectedSector}
-              onChange={(e) => onChangeSector(e.target.value)}
-              aria-label="Select Industry Sector"
-              className="karya-subbar-select"
-            >
-              <option value="ALL">All Monitored Sectors</option>
-              <option value="Clean Tech & Renewable Energy">Clean Tech &amp; Renewable</option>
-              <option value="Advanced Manufacturing">Adv. Manufacturing</option>
-              <option value="IT & IT-Enabled Services">IT &amp; IT-Enabled Services</option>
-            </select>
-          </div>
-
-          {/* Global Filter: Reporting Cycle */}
-          <div className="karya-header-filter">
-            <label htmlFor="global-cycle-select">Cycle:</label>
-            <select
-              id="global-cycle-select"
-              value={selectedCycle}
-              onChange={(e) => onChangeCycle(e.target.value)}
-              aria-label="Select Reporting Cycle"
-              className="karya-subbar-select"
-            >
-              <option value="oct26">Oct 2026 (Latest Snapshot)</option>
-              <option value="q3">Q3 2026 Cumulative</option>
-              <option value="h1">H1 2026 Reference</option>
-            </select>
+            <label htmlFor="workspace-sector-select">Sector:</label>
+            <div className="karya-select-wrapper">
+              <select
+                id="workspace-sector-select"
+                value={selectedSector}
+                onChange={(e) => onChangeSector(e.target.value)}
+                className="karya-subbar-select"
+                aria-label="Filter by Sector"
+              >
+                <option value="ALL">All Sectors</option>
+                <option value="Clean Tech & Renewable Energy">Clean Tech &amp; Solar</option>
+                <option value="Advanced Manufacturing">Adv. Manufacturing</option>
+                <option value="IT & IT-Enabled Services">IT &amp; IT-Enabled Services</option>
+              </select>
+            </div>
           </div>
         </div>
 
-        <div className="karya-subbar-notice">
-          <ShieldCheck size={14} className="karya-notice-icon" aria-hidden="true" />
-          <span>Synthetic demonstration data · Maharashtra pilot</span>
+        <div className="karya-subbar-right">
+          {/* Data Provenance Indicator matching screenshot */}
+          <div className="karya-subbar-notice">
+            <ShieldCheck size={14} className="karya-notice-icon" />
+            <span>Synthetic demonstration data · Maharashtra pilot</span>
+          </div>
         </div>
       </div>
     </header>
   );
 };
+
+export default DashboardHeader;

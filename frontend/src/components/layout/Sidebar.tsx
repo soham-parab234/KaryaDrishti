@@ -64,13 +64,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="sidebar-header">
         <div className="sidebar-brand">
           <img
-            src="/logo.png"
+            src="/assets/karya-drishti-logo.png"
             alt="KaryaDrishti Logo"
             className="sidebar-logo-img"
+            style={{ height: '38px', width: 'auto', objectFit: 'contain' }}
           />
           <div className="sidebar-title-group">
-            <h1>KaryaDrishti</h1>
-            <span className="sub-label">Labour Market Intelligence</span>
+            <h1 style={{ fontFamily: 'Lora, serif', fontSize: '18px' }}>KaryaDrishti</h1>
+            <span className="sub-label">Labour market intelligence</span>
           </div>
           {mobileOpen && (
             <button

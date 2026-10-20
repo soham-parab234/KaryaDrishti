@@ -7,7 +7,7 @@ $FrontendFolder = Join-Path $ProjectRoot "frontend"
 
 Write-Host ""
 Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "   LMIS Forecasting Engine Launcher" -ForegroundColor Cyan
+Write-Host "   KaryaDrishti Engine Launcher" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -80,4 +80,4 @@ Write-Host "Startup commands launched." -ForegroundColor Green
 Write-Host "Frontend: http://localhost:5173/" -ForegroundColor Cyan
 Write-Host "Backend:  http://127.0.0.1:8000/docs" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "Keep both terminal windows open while using LMIS."
+Write-Host "Keep both terminal windows open while using KaryaDrishti."

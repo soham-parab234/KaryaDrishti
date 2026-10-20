@@ -526,7 +526,7 @@ export const AiAssistantView: React.FC<AiAssistantViewProps> = ({
                 letterSpacing: '0.03em',
               }}
             >
-              Ask the KaryaDrishti Assistant
+              Ask the KaryaDrishti Forecasting Engine
             </label>
 
             <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
@@ -689,7 +689,7 @@ export const AiAssistantView: React.FC<AiAssistantViewProps> = ({
             >
               <Loader2 size={28} style={{ color: 'var(--rust-600)', animation: 'spin 1s linear infinite' }} />
               <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--stone-800)' }}>
-                Retrieving verified time series &amp; synthesizing analysis...
+                Retrieving verified KaryaDrishti time series &amp; synthesizing analysis...
               </div>
               <div style={{ fontSize: '12px', color: 'var(--stone-500)', maxWidth: '480px' }}>
                 Scanning DemandObservation, QualifiedSupplyEstimate, TrainingCapacityOutcome, and ForecastRun models.

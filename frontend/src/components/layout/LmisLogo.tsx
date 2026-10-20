@@ -1,1 +1,1 @@
-export { KaryaDrishtiLogo, KaryaDrishtiLogo as LmisLogo } from './KaryaDrishtiLogo';
+export { KaryaDrishtiLogo as default, KaryaDrishtiLogo, LmisLogo } from './KaryaDrishtiLogo';

@@ -69,14 +69,15 @@ export const GovMasthead: React.FC<GovMastheadProps> = ({
       <div className="masthead-main">
         <div className="brand-section">
           <img
-            src="/logo.png"
-            alt="KaryaDrishti — Labour Market Intelligence Logo"
+            src="/assets/karya-drishti-logo.png"
+            alt="KaryaDrishti Logo"
             className="brand-logo-img"
+            style={{ height: '48px', width: 'auto', objectFit: 'contain' }}
           />
           <div className="brand-text-group">
-            <h1>KaryaDrishti</h1>
+            <h1 style={{ fontFamily: 'Lora, serif', fontSize: '22px' }}>KaryaDrishti</h1>
             <div className="brand-sub">
-              Labour Market Intelligence · Skill Demand–Supply Forecasting &amp; Policy Decision Support
+              Labour market intelligence · Skill Demand–Supply Forecasting &amp; Policy Decision Support
             </div>
           </div>
         </div>

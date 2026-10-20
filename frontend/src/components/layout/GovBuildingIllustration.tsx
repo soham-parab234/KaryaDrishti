@@ -3,56 +3,55 @@ import React from 'react';
 interface GovBuildingIllustrationProps {
   variant?: 'login' | 'hero';
   className?: string;
-  style?: React.CSSProperties;
+  width?: string | number;
+  height?: string | number;
 }
 
 /**
- * Government Building Architectural Illustration
- * 
- * Accurately reproduces the neoclassical Indian secretariat / parliament building:
- * - Central classical dome with clerestory drum windows and spire
- * - Indian national tricolour flag fluttering atop the dome
- * - Stately colonnaded portico with pediment, balustrades and classical wings
- * - Warm terracotta/apricot/peach architectural tones
- * - Lush green tree clusters flanking on the right
- * - Sweeping terracotta terraced foreground curve
- * - Left column / obelisk accent
+ * Editorial Indian Institutional Architecture Artwork
+ * Featuring the classical parliament dome with the Indian tricolor flag,
+ * stately colonnades, warm peach-amber sky, and lush green trees.
+ * Used on the Login page (Screenshot 1) and Dashboard Hero panel (Screenshot 3).
  */
 export const GovBuildingIllustration: React.FC<GovBuildingIllustrationProps> = ({
-  variant = 'login',
+  variant = 'hero',
   className = '',
-  style,
+  width = '100%',
+  height = '100%',
 }) => {
   const isHero = variant === 'hero';
 
   return (
     <div
-      className={`gov-building-illustration-container ${className}`}
+      className={`gov-illustration-container ${isHero ? 'gov-hero-illus' : 'gov-login-illus'} ${className}`}
       style={{
-        position: 'relative',
-        width: '100%',
-        maxWidth: isHero ? '540px' : '480px',
-        height: isHero ? '230px' : '240px',
+        width: width,
+        height: height,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         overflow: 'hidden',
-        borderRadius: isHero ? '0 20px 20px 0' : '0 0 36px 0',
-        ...style,
+        position: 'relative',
+        borderRadius: isHero ? '0 16px 16px 0' : '0 0 16px 16px',
       }}
       aria-hidden="true"
     >
       <svg
         viewBox="0 0 540 260"
-        preserveAspectRatio="xMidYMid slice"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
         style={{
           width: '100%',
           height: '100%',
           display: 'block',
+          objectFit: 'cover',
         }}
       >
         <defs>
           {/* Sky background gradient */}
           <linearGradient id="skyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#fdf1e4" stopOpacity={isHero ? "0" : "1"} />
-            <stop offset="35%" stopColor="#fae2cf" stopOpacity={isHero ? "0.4" : "1"} />
+            <stop offset="0%" stopColor="#fdf1e4" stopOpacity={isHero ? '0' : '1'} />
+            <stop offset="35%" stopColor="#fae2cf" stopOpacity={isHero ? '0.4' : '1'} />
             <stop offset="70%" stopColor="#f7d4bd" stopOpacity="0.85" />
             <stop offset="100%" stopColor="#f4c4a6" stopOpacity="0.95" />
           </linearGradient>
@@ -102,13 +101,11 @@ export const GovBuildingIllustration: React.FC<GovBuildingIllustrationProps> = (
           <rect x="40" y="145" width="260" height="5" fill="#f9cbaf" />
 
           {/* Central Dome & Spire */}
-          {/* Spire */}
           <line x1="170" y1="20" x2="170" y2="40" stroke="#b45b32" strokeWidth="2.5" />
           <circle cx="170" cy="20" r="3" fill="#d97444" />
 
           {/* Indian National Tricolour Flag */}
           <g transform="translate(170, 18)">
-            {/* Flagpole top finial */}
             <circle cx="0" cy="0" r="1.5" fill="#b45309" />
             {/* Saffron Stripe */}
             <path d="M 0 1 Q 10 -1 18 2 L 18 5 Q 10 2 0 4 Z" fill="#ff9933" />
@@ -123,10 +120,7 @@ export const GovBuildingIllustration: React.FC<GovBuildingIllustrationProps> = (
           <rect x="165" y="38" width="10" height="4" fill="#cf774c" rx="1" />
 
           {/* Dome Curvature */}
-          <path
-            d="M 148 75 C 148 42, 192 42, 192 75 Z"
-            fill="url(#domeGrad)"
-          />
+          <path d="M 148 75 C 148 42, 192 42, 192 75 Z" fill="url(#domeGrad)" />
           {/* Dome ribs for architectural depth */}
           <path d="M 170 42 Q 170 58 170 75" stroke="#fce4d4" strokeWidth="1.5" fill="none" opacity="0.6" />
           <path d="M 158 50 Q 163 62 165 75" stroke="#ba653b" strokeWidth="1.2" fill="none" opacity="0.7" />
@@ -136,7 +130,7 @@ export const GovBuildingIllustration: React.FC<GovBuildingIllustrationProps> = (
           <rect x="144" y="75" width="52" height="18" fill="#e89e75" />
           <rect x="141" y="73" width="58" height="3" fill="#fbd6bf" />
           <rect x="141" y="92" width="58" height="4" fill="#cf774c" />
-          {/* Clerestory arched windows */}
+          {/* Arched windows */}
           {[149, 157, 165, 173, 181].map((x) => (
             <path
               key={x}
@@ -158,7 +152,6 @@ export const GovBuildingIllustration: React.FC<GovBuildingIllustrationProps> = (
               <rect x={colX} y="96" width="4.5" height="48" fill="#fceadc" />
               <rect x={colX - 1} y="95" width="6.5" height="2" fill="#debca6" />
               <rect x={colX - 1} y="142" width="6.5" height="3" fill="#debca6" />
-              {/* Window behind column */}
               <rect x={colX + 5} y="103" width="6" height="10" rx="1" fill="#ba6137" opacity="0.7" />
               <rect x={colX + 5} y="122" width="6" height="15" rx="1" fill="#ba6137" opacity="0.7" />
             </g>
@@ -185,31 +178,25 @@ export const GovBuildingIllustration: React.FC<GovBuildingIllustrationProps> = (
               <rect x={colX} y="96" width="4.5" height="48" fill="#fceadc" />
               <rect x={colX - 1} y="95" width="6.5" height="2" fill="#debca6" />
               <rect x={colX - 1} y="142" width="6.5" height="3" fill="#debca6" />
-              {/* Window behind column */}
               <rect x={colX + 5} y="103" width="6" height="10" rx="1" fill="#ba6137" opacity="0.7" />
               <rect x={colX + 5} y="122" width="6" height="15" rx="1" fill="#ba6137" opacity="0.7" />
             </g>
           ))}
         </g>
 
-        {/* 4. Lush Green Tree Clusters Flanking on the Right */}
+        {/* 4. Lush Green Tree Clusters on the Right */}
         <g id="landscape-trees" transform="translate(420, 120)">
-          {/* Back Tree layer */}
           <circle cx="50" cy="55" r="38" fill="#3a6048" />
           <circle cx="20" cy="65" r="30" fill="#446e53" />
           <circle cx="80" cy="70" r="32" fill="#345741" />
-
-          {/* Mid Tree layer */}
           <circle cx="40" cy="70" r="32" fill="#4d7c5f" />
           <circle cx="10" cy="80" r="26" fill="#588b6c" />
           <circle cx="70" cy="82" r="28" fill="#426b52" />
-
-          {/* Foreground Tree Highlights */}
           <circle cx="35" cy="85" r="24" fill="#5c9371" />
           <circle cx="65" cy="95" r="22" fill="#4d7c5f" />
         </g>
 
-        {/* 5. Sweeping Terracotta Foreground Ramp / Hill */}
+        {/* 5. Sweeping Terracotta Foreground Ramp / Curve */}
         <path
           d="M -20 260 L -20 215 Q 180 230 330 220 Q 420 215 560 180 L 560 260 Z"
           fill="url(#groundGrad)"
@@ -223,3 +210,5 @@ export const GovBuildingIllustration: React.FC<GovBuildingIllustrationProps> = (
     </div>
   );
 };
+
+export default GovBuildingIllustration;

@@ -121,7 +121,7 @@ export const AiAssistantDrawer: React.FC<AiAssistantDrawerProps> = ({ selectedDi
 
       setMessages((prev) => [...prev, assistantMsg]);
     } catch (err: unknown) {
-      const errText = err instanceof Error ? err.message : 'Failed to query KaryaDrishti intelligence assistant.';
+      const errText = err instanceof Error ? err.message : 'Failed to query LMIS intelligence assistant.';
       setErrorMessage(errText);
     } finally {
       setIsLoading(false);
@@ -171,7 +171,7 @@ export const AiAssistantDrawer: React.FC<AiAssistantDrawerProps> = ({ selectedDi
             e.currentTarget.style.boxShadow =
               '0 10px 25px -5px rgba(194, 65, 12, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.1)';
           }}
-          aria-label="Open KaryaDrishti AI Labour Market Intelligence Assistant"
+          aria-label="Open LMIS AI Labour Market Intelligence Assistant"
         >
           <Sparkles size={16} style={{ color: '#fed7aa' }} />
           <span>AI Intelligence Assistant</span>
@@ -194,7 +194,7 @@ export const AiAssistantDrawer: React.FC<AiAssistantDrawerProps> = ({ selectedDi
       {isOpen && (
         <div
           role="dialog"
-          aria-label="KaryaDrishti AI Assistant Dialogue"
+          aria-label="LMIS AI Assistant Dialogue"
           style={{
             position: 'fixed',
             bottom: '24px',
@@ -241,7 +241,7 @@ export const AiAssistantDrawer: React.FC<AiAssistantDrawerProps> = ({ selectedDi
               </div>
               <div>
                 <div style={{ fontSize: '13px', fontWeight: 700, letterSpacing: '0.01em' }}>
-                  KaryaDrishti Intelligence Assistant
+                  LMIS Intelligence Assistant
                 </div>
                 <div style={{ fontSize: '11px', color: '#a8a29e', display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <span>Grounded Decision Support</span>
@@ -339,7 +339,7 @@ export const AiAssistantDrawer: React.FC<AiAssistantDrawerProps> = ({ selectedDi
                     padding: '0 4px',
                   }}
                 >
-                  {msg.sender === 'user' ? 'You' : 'KaryaDrishti AI Assistant'} • {msg.timestamp}
+                  {msg.sender === 'user' ? 'You' : 'LMIS AI Assistant'} • {msg.timestamp}
                 </div>
 
                 {/* Message Bubble */}
@@ -575,7 +575,7 @@ export const AiAssistantDrawer: React.FC<AiAssistantDrawerProps> = ({ selectedDi
             {isLoading && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#78716c', fontSize: '12px' }}>
                 <Loader2 size={15} className="spinner" style={{ animation: 'spin 1s linear infinite' }} />
-                <span>Retrieving verified records &amp; synthesizing analysis...</span>
+                <span>Retrieving verified LMIS records &amp; synthesizing analysis...</span>
               </div>
             )}
 
@@ -708,7 +708,7 @@ export const AiAssistantDrawer: React.FC<AiAssistantDrawerProps> = ({ selectedDi
               value={queryInput}
               onChange={(e) => setQueryInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Ask KaryaDrishti Assistant (e.g. 'Shortages in Pune')..."
+              placeholder="Ask LMIS Assistant (e.g. 'Shortages in Pune')..."
               disabled={isLoading}
               style={{
                 flex: 1,

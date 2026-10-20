@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import { KaryaDrishtiLogo } from '../layout/KaryaDrishtiLogo';
 import { GovBuildingIllustration } from '../layout/GovBuildingIllustration';
-import { Mail, Lock, Eye, EyeOff, Landmark, User, ArrowRight } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, Landmark, User, ArrowRight, ShieldCheck } from 'lucide-react';
+
+export interface UserSession {
+  isAuthenticated: boolean;
+  role: string;
+  email: string;
+  mode: 'staff' | 'public';
+}
 
 interface LoginPageProps {
   onLogin: (session: { role: string; email: string; mode: 'staff' | 'public' }) => void;
@@ -12,33 +19,83 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
   const [email, setEmail] = useState<string>('planner@karyadrishti.in');
   const [password, setPassword] = useState<string>('••••••••');
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onLogin({
-      role: activeTab === 'staff' ? 'Policy Planner' : 'Public Analyst',
-      email: email || 'planner@karyadrishti.in',
-      mode: activeTab,
-    });
+    setErrorMessage(null);
+
+    if (activeTab === 'staff') {
+      if (!email.trim()) {
+        setErrorMessage('Please enter an official work email address.');
+        return;
+      }
+      if (!password.trim()) {
+        setErrorMessage('Please enter your password.');
+        return;
+      }
+    }
+
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      onLogin({
+        role: activeTab === 'staff' ? 'Policy Planner' : 'Public Viewer',
+        email: email || 'planner@karyadrishti.in',
+        mode: activeTab,
+      });
+    }, 250);
   };
 
-  const handleDemoSelect = (roleName: string) => {
-    onLogin({
-      role: roleName,
-      email: 'planner@karyadrishti.in',
-      mode: 'staff',
-    });
+  const handleDemoSelect = (roleName: string, roleMode: 'staff' | 'public' = 'staff') => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      onLogin({
+        role: roleName,
+        email: `${roleName.toLowerCase().replace(/\s+/g, '.')}@karyadrishti.in`,
+        mode: roleMode,
+      });
+    }, 150);
   };
+
+  const demoRoles = [
+    {
+      initials: 'PP',
+      title: 'Policy Planner',
+      description: 'Forecasts, seat scenarios, policy brief',
+      mode: 'staff' as const,
+    },
+    {
+      initials: 'TA',
+      title: 'Training Administrator',
+      description: 'Capacity allocation, institute monitoring',
+      mode: 'staff' as const,
+    },
+    {
+      initials: 'AN',
+      title: 'Analyst',
+      description: 'Gap metrics, time series backtesting',
+      mode: 'staff' as const,
+    },
+    {
+      initials: 'PV',
+      title: 'Public Viewer',
+      description: 'Read-only summaries, national dashboard',
+      mode: 'public' as const,
+    },
+  ];
 
   return (
     <div className="login-page-wrapper">
-      {/* Decorative top-left warm terracotta/peach corner backdrop */}
+      {/* Decorative top-left warm peach corner backdrop matching Reference Image 1 */}
       <div className="login-corner-backdrop" aria-hidden="true" />
 
       <div className="login-container">
         {/* Top Branding Section with Official KaryaDrishti Logo */}
         <header className="login-header">
-          <KaryaDrishtiLogo variant="login" />
+          <KaryaDrishtiLogo variant="login" height={60} />
         </header>
 
         {/* Two-Column Editorial Grid */}
@@ -59,7 +116,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
             </p>
 
             <div className="login-illustration-wrapper">
-              <GovBuildingIllustration variant="login" />
+              <GovBuildingIllustration variant="login" height={220} />
             </div>
           </div>
 
@@ -79,7 +136,10 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                   role="tab"
                   aria-selected={activeTab === 'staff'}
                   className={`login-tab-btn ${activeTab === 'staff' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('staff')}
+                  onClick={() => {
+                    setActiveTab('staff');
+                    setErrorMessage(null);
+                  }}
                 >
                   <Landmark size={15} />
                   <span>Staff login</span>
@@ -89,64 +149,97 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                   role="tab"
                   aria-selected={activeTab === 'public'}
                   className={`login-tab-btn ${activeTab === 'public' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('public')}
+                  onClick={() => {
+                    setActiveTab('public');
+                    setErrorMessage(null);
+                  }}
                 >
                   <User size={15} />
                   <span>Public view</span>
                 </button>
               </div>
 
+              {/* Error Alert if any */}
+              {errorMessage && (
+                <div className="login-error-msg" role="alert">
+                  {errorMessage}
+                </div>
+              )}
+
               {/* Login Form */}
-              <form onSubmit={handleSubmit} className="login-form">
-                <div className="login-field-group">
-                  <label htmlFor="login-email" className="login-label">
-                    Email
-                  </label>
-                  <div className="login-input-container">
-                    <Mail size={16} className="login-input-icon" aria-hidden="true" />
-                    <input
-                      id="login-email"
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="planner@karyadrishti.in"
-                      className="login-input"
-                      required
-                    />
+              {activeTab === 'staff' ? (
+                <form onSubmit={handleSubmit} className="login-form">
+                  <div className="login-field-group">
+                    <label htmlFor="login-email" className="login-label">
+                      Email
+                    </label>
+                    <div className="login-input-container">
+                      <Mail size={16} className="login-input-icon" aria-hidden="true" />
+                      <input
+                        id="login-email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="planner@karyadrishti.in"
+                        className="login-input"
+                        autoComplete="email"
+                        required
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div className="login-field-group">
-                  <label htmlFor="login-password" className="login-label">
-                    Password
-                  </label>
-                  <div className="login-input-container">
-                    <Lock size={16} className="login-input-icon" aria-hidden="true" />
-                    <input
-                      id="login-password"
-                      type={showPassword ? 'text' : 'password'}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Enter password"
-                      className="login-input"
-                      required
-                    />
-                    <button
-                      type="button"
-                      className="login-eye-btn"
-                      onClick={() => setShowPassword(!showPassword)}
-                      aria-label={showPassword ? 'Hide password' : 'Show password'}
-                    >
-                      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                    </button>
+                  <div className="login-field-group">
+                    <label htmlFor="login-password" className="login-label">
+                      Password
+                    </label>
+                    <div className="login-input-container">
+                      <Lock size={16} className="login-input-icon" aria-hidden="true" />
+                      <input
+                        id="login-password"
+                        type={showPassword ? 'text' : 'password'}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Enter password"
+                        className="login-input"
+                        autoComplete="current-password"
+                        required
+                      />
+                      <button
+                        type="button"
+                        className="login-eye-btn"
+                        onClick={() => setShowPassword(!showPassword)}
+                        aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      >
+                        {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                      </button>
+                    </div>
                   </div>
-                </div>
 
-                <button type="submit" className="login-submit-btn">
-                  <span>Sign in</span>
-                  <ArrowRight size={17} />
-                </button>
-              </form>
+                  <button type="submit" className="login-submit-btn" disabled={isLoading}>
+                    <span>{isLoading ? 'Signing in...' : 'Sign in'}</span>
+                    <ArrowRight size={17} />
+                  </button>
+                </form>
+              ) : (
+                <div className="public-access-box">
+                  <div className="public-access-desc">
+                    <ShieldCheck size={20} style={{ color: '#2d6a4f', flexShrink: 0 }} />
+                    <span>
+                      Public access provides open analytical briefings, aggregate demand–supply charts, and district-level skill summaries in read-only mode.
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    className="login-submit-btn"
+                    onClick={() => handleDemoSelect('Public Viewer', 'public')}
+                    disabled={isLoading}
+                    style={{ marginTop: '16px' }}
+                  >
+                    <span>{isLoading ? 'Opening View...' : 'Explore Public Dashboard'}</span>
+                    <ArrowRight size={17} />
+                  </button>
+                </div>
+              )}
 
               {/* Demo Role Divider */}
               <div className="login-divider">
@@ -155,29 +248,33 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                 <span className="login-divider-line" />
               </div>
 
-              {/* Demo Role Card: Policy Planner */}
-              <div
-                className="demo-role-card"
-                onClick={() => handleDemoSelect('Policy Planner')}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    handleDemoSelect('Policy Planner');
-                  }
-                }}
-              >
-                <div className="demo-role-avatar">PP</div>
-                <div className="demo-role-info">
-                  <div className="demo-role-name">Policy Planner</div>
-                  <div className="demo-role-desc">
-                    Forecasts, seat scenarios, policy brief
+              {/* Demo Role Cards */}
+              <div className="demo-roles-list">
+                {demoRoles.map((role) => (
+                  <div
+                    key={role.title}
+                    className="demo-role-card"
+                    onClick={() => handleDemoSelect(role.title, role.mode)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleDemoSelect(role.title, role.mode);
+                      }
+                    }}
+                    aria-label={`Continue as ${role.title}`}
+                  >
+                    <div className="demo-role-avatar">{role.initials}</div>
+                    <div className="demo-role-info">
+                      <div className="demo-role-name">{role.title}</div>
+                      <div className="demo-role-desc">{role.description}</div>
+                    </div>
+                    <div className="demo-role-arrow">
+                      <ArrowRight size={16} />
+                    </div>
                   </div>
-                </div>
-                <div className="demo-role-arrow">
-                  <ArrowRight size={16} />
-                </div>
+                ))}
               </div>
             </div>
           </div>
@@ -186,3 +283,5 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
     </div>
   );
 };
+
+export default LoginPage;

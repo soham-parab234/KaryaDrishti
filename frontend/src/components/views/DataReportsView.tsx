@@ -233,7 +233,7 @@ interface IngestionBatchItem {
       if (liveGaps && liveGaps.length > 0) {
         const hasImported = liveGaps.some((g) => g.data_status === 'IMPORTED');
         const headers = [
-          '# KARYADRISHTI PLATFORM - MAHARASHTRA LABOUR MARKET GAP REPORT',
+          '# KARYADRISHTI - MAHARASHTRA LABOUR MARKET GAP REPORT',
           `# DATA STATUS: ${hasImported ? 'HYBRID (CONTAINS VERIFIED IMPORTED DEMAND OBSERVATIONS)' : 'CALIBRATED SYNTHETIC BASELINE DATA'}`,
           '# GENERATION TIMESTAMP: ' + new Date().toISOString(),
           '# DOMAIN GUARDRAILS: Confirmed demand reflects approved employer postings. Unapproved postings excluded.',
@@ -273,7 +273,7 @@ interface IngestionBatchItem {
     }
 
     const headers = [
-      '# KARYADRISHTI PLATFORM - MAHARASHTRA PILOT DATASET',
+      '# KARYADRISHTI - MAHARASHTRA PILOT DATASET',
       '# DATA STATUS: CALIBRATED SYNTHETIC BASELINE DATA',
       '# GENERATION TIMESTAMP: ' + new Date().toISOString(),
       '# NOTICE: Calibrated baseline dataset. Real public systems remain planned connectors.',

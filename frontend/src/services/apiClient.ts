@@ -294,11 +294,7 @@ class ApiClient {
           }
         } catch {
           if (response.status === 502) {
-<<<<<<< HEAD
-            errMessage = 'Service temporarily unavailable (HTTP 502 Bad Gateway). Unable to reach the backend intelligence engine. Please check the deployed LMIS backend URL and browser CORS configuration.';
-=======
-            errMessage = 'Service temporarily unavailable (HTTP 502 Bad Gateway). Unable to reach the backend intelligence engine. Please verify that the FastAPI backend server is running on http://127.0.0.1:8000.';
->>>>>>> 79bfb0a (Update KaryaDrishti branding and dashboard)
+            errMessage = 'Service temporarily unavailable (HTTP 502 Bad Gateway). Unable to reach the backend intelligence engine. Please check the deployed KaryaDrishti backend URL and browser CORS configuration.';
           } else if (response.status === 503) {
             errMessage = 'Service temporarily unavailable (HTTP 503). The intelligence engine is currently initializing or undergoing maintenance.';
           }
@@ -310,7 +306,7 @@ class ApiClient {
     } catch (err: unknown) {
       if (err instanceof Error) {
         if (err.message.includes('Failed to fetch') || err.message.includes('NetworkError')) {
-          throw new Error('Connection failed: Unable to communicate with the backend. Please verify that the FastAPI backend server is running on http://127.0.0.1:8000.', { cause: err });
+          throw new Error('Connection failed: Unable to communicate with the KaryaDrishti backend. Please verify that the FastAPI backend server is running on http://127.0.0.1:8000.', { cause: err });
         }
         throw err;
       }
