@@ -1,11 +1,35 @@
-# KaryaDrishti — Labour market intelligence
-### AI-Enabled Labour Market Intelligence & Skill Demand-Supply Forecasting Engine
+# KaryaDrishti — Labour Market Intelligence
+### *See the workforce. Plan the skills. Act before the gap.*
+#### AI-Enabled Labour Market Intelligence & Skill Demand-Supply Forecasting Engine
 
-An evidence-based decision-support platform designed for state skill development missions, labour-market economists, and vocational training planners. The platform ingests employer hiring signals, normalizes job postings against the National Classification of Occupations (NCO-2015), calculates demand-supply shortages and oversupplies, projects future skill requirements using chronological forecasting, raises early-warning alerts, and simulates training-seat interventions.
+An evidence-based decision-support platform designed for state skill development missions, labour-market economists, and vocational training planners. The platform ingests employer hiring signals, normalizes job postings against the National Classification of Occupations (NCO-2015), calculates demand-supply shortages and oversupplies, projects future skill requirements using chronological forecasting, raises early-warning alerts, simulates training-seat interventions, and provides a grounded AI intelligence assistant.
 
 ---
 
-## 1. System Architecture
+## 1. Website Walkthrough
+
+> **3m 56s Guided Walkthrough (`KaryaDrishti Website Walkthrough`)**  
+> Demonstrates the complete end-to-end KaryaDrishti web experience—from role-based sign-in and live district/sector filtering through forecasting benchmarks, NCO-2015 normalization, training-seat policy simulation, CSV ingestion, audit exports, and the grounded AI assistant.
+
+
+https://github.com/user-attachments/assets/8ca2cdd5-cc4e-4a5d-8764-4f6e160ea0e4
+
+
+### What the Website Walkthrough Covers
+
+| Step | Screen / Feature | Highlights Demonstrated |
+|---|---|---|
+| **1. Role-Based Entry** | **Sign-In (`Staff login` / `Public view`)** | Role-aware entry with instant demo personas: **Policy Planner**, **Training Administrator**, **Analyst**, and **Public Viewer**. |
+| **2. Executive Pulse** | **Overview** | Live **API Connected** / **Baseline Mode** indicator, **District** (*All Pilot Districts*, *Pune*, *Nashik*) & **Sector** filters, KPI cards (*Demand Now*, *Qualified Supply Now*, *Projected Gap*, *Backtest Accuracy*), interactive 3/6/12-month **Holt smoothing** chart with uncertainty bands, occupation ledger, early-warning panel, and data provenance disclosures. |
+| **3. Taxonomy & Mapping** | **Skills match** | **Occupation Explorer & Taxonomy Normalization** aligned to **DGE NCO-2015 (8-digit)** & **NSQF Levels 4–5**, searchable monitored occupations with click-to-open **Occupation Factsheet** drawers, and the **Review Queue** where approving a match teaches the alias registry and refreshes gaps, forecasts, and alerts automatically. |
+| **4. Model Validation & Alerts** | **Forecasts** | **Chronological Holdout Benchmark Scorecard** (*3-Month Moving Average*, *Holt Linear Exponential Smoothing*, *Naïve Last Value*, *Linear Drift Baseline*, and *Candidate ARIMA* with zero-leakage holdouts and `NOT EVALUATED` transparency) plus **Early-Warning Intelligence** triage (*Acknowledge* / *Escalate for Target Review*). |
+| **5. Policy Interventions** | **Scenarios** | **Evidence-Based Policy Recommendations** (*Seat Expansion*, *Curriculum Pivot*, *Apprenticeships*, *Data Audits*) with one-click **Simulate Seats →**, interactive sanction & conversion levers, **Gap Closure Trajectory** chart, live INR budget, and instructor staffing estimates. |
+| **6. Lineage & Governance** | **Data & Reports** | **Source Lineage Registry**, live **FastAPI CSV Ingestion & Schema 1.0 Validator**, **Connectors & Adapters** (local CSV + planned NCS, e-Shram, NCVET/SIP specifications), and **Evidence Exports** (live CSV, District Skill Committee planning brief, and SHA-256 audit trail JSON). |
+| **7. Grounded Q&A** | **AI Assistant** | Dedicated **AI Assistant** tab and floating **AI Intelligence Assistant** drawer operating as a read-only governance engine grounded strictly in occupational time series, supply estimates, capacity, and baseline forecasts. |
+
+---
+
+## 2. System Architecture
 
 ```mermaid
 graph TD
@@ -24,17 +48,18 @@ graph TD
     F --> K[Training-Seat Scenario Simulator]
     K -->|Master R&D Section 10 Formula| L[Policy Intervention Output]
     C -->|Tamper-Evident SHA-256 Audit Trail| M[Governance & Audit Log Exporter]
+    F & G & I & K --> AI[Grounded AI Intelligence Assistant]
 ```
 
 ### Technology Stack
-- **Backend**: Python 3.14 + FastAPI + SQLAlchemy + SQLite (`StaticPool` in-memory test isolation)
-- **Frontend**: React 19 + TypeScript + Vite + Recharts + Lucide Icons (GovSync aesthetic design tokens)
-- **Validation**: Pydantic v2 schemas + strict CSV schema validator
-- **Testing**: Pytest (82 automated unit & integration tests) + ESLint (0 errors) + Vite production build
+- **Backend**: Python 3.14 + FastAPI + SQLAlchemy + SQLite (`StaticPool` in-memory test isolation; PostgreSQL target)
+- **Frontend**: React 19 + TypeScript + Vite 8 + Recharts 3 + Lucide Icons (GovSync-inspired warm parchment & terracotta editorial design system)
+- **Validation**: Pydantic v2 schemas + strict CSV Schema 1.0 validator
+- **Testing & Quality**: Pytest backend test suite (`backend/tests/`), ESLint, and TypeScript / Vite production build
 
 ---
 
-## 2. Core Modules & Implemented Phases
+## 3. Core Modules & Implemented Phases
 
 | Phase | Capability | Key Implementation Details |
 |---|---|---|
@@ -44,76 +69,77 @@ graph TD
 | **Phase 4** | **Chronological Forecasting** | Evaluates 3-month Moving Average baseline vs Holt Exponential Smoothing. Strict chronological holdout evaluation without future data leakage. Computes true MAE, RMSE, and MAPE. Dynamically expanding 80% confidence intervals. |
 | **Phase 5A** | **Early-Warning Alerts** | Rule-based triage: Shortage Risk (Critical vs Warning), Oversupply Risk, Emerging Demand, and Data Quality Warning. Discloses configurable baseline default thresholds transparently. |
 | **Phase 5B** | **Scenario Planner** | Implements exact Master R&D Section 10 formula: $\text{Scenario Entrants} = \text{Seats} \times \left(\frac{\text{Enrol}}{100}\right) \times \left(\frac{\text{Comp}}{100}\right) \times \left(\frac{\text{Entry}}{100}\right)$. Computes residual gap, operational budget in INR, and instructor staffing needs. |
-| **Phase 6** | **Frontend Integration** | Typed API client (`apiClient.ts`), reactive live connection badge with latency in masthead, interactive review queue, forecast projection overlay, and live CSV upload validator. |
+| **Phase 6** | **Frontend Integration** | Typed API client (`apiClient.ts`), reactive live connection badge (`API Connected` / `Baseline Mode`) with latency, interactive review queue, forecast projection overlay, and live CSV upload validator. |
 | **Phase 7** | **E2E Validation** | Comprehensive automated tests passing with 0 warnings/failures. Clean frontend build. Browser visual verification at desktop (1440x900) and tablet (820x1180) resolutions. |
 | **Phase 8** | **Reactive Pipeline** | Automatic pipeline recomputation triggering upon human approval of normalized job titles. Updates confirmed demand observations, recalculates gaps, refreshes forecasts, and updates early warning alerts idempotently. |
 | **Phase 9** | **Forecasting Reliability** | Strict monthly chronological reconciliation: resolves multi-record and synthetic-versus-imported observations without duplicate counting. Holt state-space standard errors ($\sigma_h^2 = \sigma^2 [1 + \sum_{j=1}^{h-1}(\alpha + j\alpha\beta)^2]$). Dedicated `PROJECTED_SHORTAGE_RISK` and `PROJECTED_OVERSUPPLY_RISK` alerts. Transparent `SYNTHETIC`, `IMPORTED`, and `HYBRID` provenance badges. Dynamic trade selector. |
 | **Phase 10** | **Decision Intelligence** | Policy recommendation engine formulating 4 actionable intervention archetypes: Capacity Expansion, Curriculum Modernization, Apprenticeship Tie-ups, and Data Collection Audits. Integrates observed evidence with 3-month forecast trajectories and institutional training capacity. Actionable "Simulate Seats" workflow. |
 | **Phase 11** | **Data Integration Readiness** | Extensible connector architecture (`BaseDataConnector`). Validated adapters for employer job postings and institutional training supply (`/api/ingestion/import-supply`). Formally specified interfaces for planned national platforms (NCS, e-Shram, NCVET/SIP) with explicit security requirements, credential isolation, and clear unverified disclosures. |
 | **Phase 12** | **Governance & Explainability** | Tamper-evident SHA-256 chained audit trail (`/api/governance/audit-logs`) tracking batch imports, human reviews, and pipeline recomputations. Machine-readable explainability endpoints (`/api/governance/explainability`) documenting forecasting mathematics, gap formulas, alert triggers, and decision logic. Downloadable cryptographic audit log exports. |
-| **Phase 13** | **End-to-End System Integration** | Full end-to-end workflow verification across all 13 phases. Unified occupation discovery across Overview, Explorer, and Forecasting views. Multi-source provenance disclosure, error boundary resilience, and automated regression suite (99 backend tests, 0 ESLint errors, clean production bundle). |
+| **Phase 13** | **End-to-End System Integration** | Full end-to-end workflow verification across all 13 phases. Unified occupation discovery across Overview, Skills match, and Forecasts views. Multi-source provenance disclosure, error boundary resilience, and automated regression suite. |
 
 ---
 
-## 3. Data Provenance & Integrity Guardrails
+## 4. Data Provenance & Integrity Guardrails
 
 1. **Synthetic vs Verified Data Classification**:
-   - Any demonstration figures from Master R&D Section 8 (e.g. Pune Solar PV demand=680, supply=420, gap rate=38.2%) are explicitly labeled `SYNTHETIC_DEMO`.
-   - The UI displays an unmissable top amber banner whenever synthetic or demo data is being viewed.
+   - Any demonstration figures from Master R&D Section 8 (e.g. Pune Solar PV baseline demand=680, supply=420, gap rate=38.2%) are explicitly labeled `SYNTHETIC DEMO` / `SYNTHETIC BASELINE`.
+   - The workspace strip continuously displays `Synthetic demonstration data · Maharashtra pilot` so planners always know when demonstration data is active.
 2. **Training Capacity vs Available Supply Separation**:
    - Sanctioned training seats are treated strictly as institutional capacity. They are **never** treated as immediate qualified workers.
 3. **Zero Data Leakage in Model Evaluation**:
-   - Holdout evaluation strictly splits training and evaluation periods. Models are fit purely on history preceding the holdout window.
+   - Holdout evaluation strictly splits training and evaluation periods. Models are fit purely on history preceding the holdout window; under-evidenced models display `NOT EVALUATED` rather than fabricated metrics.
 4. **No Unimplemented Integration Claims**:
-   - The platform clearly distinguishes verified local datasets from hypothetical external live feeds (e.g. NCS, Skill India Digital).
+   - The platform clearly distinguishes verified local datasets and CSV adapters from planned external government feeds (e.g. NCS, e-Shram, NCVET/SIP).
 
 ---
 
-## 4. Local Quickstart (Windows PowerShell)
+## 5. Local Quickstart (Windows PowerShell)
 
-### Step 1: Clone & Prerequisites
+### Prerequisites
 Ensure Python (>= 3.11) and Node.js (>= 18) are installed on your machine.
 
-### Step 2: Start the FastAPI Backend
-Open a PowerShell terminal in the repository root:
+### First-Time Dependency Setup
 ```powershell
-# Navigate to backend directory
-cd backend
+# 1. Backend virtual environment & dependencies (from repository root)
+python -m venv backend\.venv
+.\backend\.venv\Scripts\Activate.ps1
+pip install -r backend\requirements.txt
 
-# Create and activate virtual environment
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+# 2. Frontend dependencies
+npm --prefix frontend install
+```
 
-# Install dependencies
-pip install -r requirements.txt
+### Option A: One-Command Launcher
+Once dependencies are installed, launch both servers in separate PowerShell windows from the repository root:
+```powershell
+.\start-lmis.ps1
+```
 
-# Run backend development server (port 8000)
-python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+### Option B: Manual Two-Terminal Setup
+**Terminal 1 — FastAPI Backend (port 8000):**
+```powershell
+# Run from repository root
+$env:PYTHONPATH = "."
+.\backend\.venv\Scripts\python.exe -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 - API Docs: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 - Health Check: [http://127.0.0.1:8000/api/health](http://127.0.0.1:8000/api/health)
 
-### Step 3: Start the Vite Frontend
-Open a second PowerShell terminal in the repository root:
+**Terminal 2 — Vite Frontend (port 5173):**
 ```powershell
-# Navigate to frontend directory
 cd frontend
-
-# Install dependencies
-npm install
-
-# Run frontend development server (port 5173)
 npm run dev
 ```
 - Web Application: [http://localhost:5173/](http://localhost:5173/)
 
 ---
 
-## 5. Running Verification & Test Suites
+## 6. Running Verification & Test Suites
 
 ```powershell
-# 1. Run complete backend test suite (82 tests)
-$env:PYTHONPATH=".."; .\backend\.venv\Scripts\pytest.exe backend/tests -v
+# 1. Run complete backend test suite
+$env:PYTHONPATH = "."; .\backend\.venv\Scripts\pytest.exe backend/tests -v
 
 # 2. Run frontend TypeScript linting
 cmd /c "npm --prefix frontend run lint"
@@ -124,59 +150,46 @@ cmd /c "npm --prefix frontend run build"
 
 ---
 
-## 6. Operational Workflow & System Walkthrough
+## 7. Operational Workflow & Website Guide
 
-### Act 1: The Problem & High-Level Evidence (Screen 1: Overview)
-1. **Open [http://localhost:5173/](http://localhost:5173/)**.
-2. **Highlight the Masthead**: Point out the green `FASTAPI LIVE` status badge showing active backend connection and millisecond latency.
-3. **Show Data Integrity Banner**: Point out the top amber banner informing government planners that demonstration pilot records are active with synthetic/hybrid provenance tags.
-4. **Inspect KPI Grid & Gap Ledger**:
-   - Select district **Pune (MH_PUN)**.
-   - Show the primary pilot trade: **Solar PV Installation & Maintenance Technician (NCO 7421.0301)**.
-   - Demand: 680 postings | Qualified Supply: 420 completers | Absolute Shortage: +260 | Gap Rate: 38.2%.
-   - Show that sanctioned seats (450) and enrolled trainees (410) are tracked separately from qualified supply.
+### Entry: Role-Based Sign-In (`LoginPage`)
+1. Open [http://localhost:5173/](http://localhost:5173/).
+2. Choose **Staff login** or **Public view**, or select a one-click demo role (**Policy Planner**, **Training Administrator**, **Analyst**, or **Public Viewer**).
 
-### Act 2: Ingestion, Normalization & Reactive Recomputation (Screen 2: Occupation Explorer)
-1. **Navigate to 'Occupation Explorer'**.
-2. **Review NCO-2015 Standards**: Search `Solar` or `Welder` to view canonical NCO codes and registered aliases.
-3. **Human Review Queue & Reactive Pipeline**:
-   - Review pending job postings (e.g. `Solar Rooftop Technician` or `Lead CNC Programmer`) pre-matched with confidence scores.
-   - Click **Approve**. Explain that approval writes to the learned alias registry **and immediately recomputes the intelligence pipeline** (updating confirmed demand, gaps, forecasts, alerts, and recommendations without manual intervention).
+### Tab 1: `Overview` (Executive Pulse & Demand-Supply Trajectory)
+1. **Header & Workspace Strip**: Verify the **`API Connected`** (or **`Baseline Mode`** fallback) pill, **`Synthetic demonstration data · Maharashtra pilot`** disclosure, and filter dynamically by **District** (*All Pilot Districts*, *Pune District*, *Nashik District*) and **Sector** (*All Sectors*, *Clean Tech & Solar*, *Adv. Manufacturing*, *IT & IT-Enabled Services*).
+2. **KPI Cards & Forecast Chart**: Inspect *Demand Now*, *Qualified Supply Now*, *Projected Gap*, and *Backtest Accuracy*. Switch the forecast window (**3, 6, or 12 months**) or model (**Holt smoothing**, **3M Moving Average**, **Ensemble**), hover forecast points for uncertainty ranges, or click **Export CSV**.
+3. **Occupation Breakdown, Early Warnings & Provenance**: Scroll to compare canonical NCO-2015 demand signals, qualified supply, separate training seats, net gaps, ranked early-warning alerts, and source-level limitations.
 
-### Act 3: Chronological Forecasting & Alerts (Screen 3: Forecast & Alerts)
-1. **Navigate to 'Forecast & Alerts'**.
-2. **Inspect Model Evaluation Scorecard**:
-   - Compare the **3-Month Moving Average Baseline** against the **Candidate Holt Exponential Smoothing Model**.
-   - Review holdout metrics: MAE, RMSE, and MAPE under strict chronological validation.
-3. **Inspect Forecast Chart & Provenance Badges**:
-   - Show historical demand points transitioning into the 3-month forecast window with expanding 80% confidence interval bands calculated via state-space variance.
-   - Select newly imported or synthetic trades via the dynamic dropdown.
-4. **Inspect Early-Warning Decision Inbox**:
-   - Note the distinction between observed shortage alerts and **Projected Shortage Risk** alerts raised from forecast trajectories.
+### Tab 2: `Skills match` (Occupation Explorer, Factsheets & Normalization Queue)
+1. **Monitored Canonical Occupations**: Search by job title, alias, or NCO code, filter by sector or market status, and click any occupation row to open its full **Occupation Factsheet** drawer.
+2. **Occupation Title Normalization & Review Queue**: Inspect incoming raw job postings (e.g., *Solar PV Rooftop Lead Installer*, *CNC Mechanical Plant Service Fitter*) with confidence scores and match methods (`EXACT_ALIAS`, `SEMANTIC_SUGGESTION`, `TOKEN_NORM`).
+3. **Reactive Pipeline**: Click **Approve** to teach the learned NCO alias registry and trigger automatic pipeline recomputation—updating confirmed demand, gaps, forecasts, and alerts without manual intervention.
 
-### Act 4: Policy Simulator & Decision Intelligence (Screen 4: Scenario Planner)
-1. **Navigate to 'Scenario Planner'**.
-2. **Review Decision Intelligence Shelf**:
-   - Inspect automated policy recommendations (Capacity Expansion, Curriculum Modernization, Apprenticeship Tie-up, Data Collection Audit).
-   - Click **"Simulate Seats"** on a recommendation card to automatically populate the simulator with recommended intervention targets.
-3. **Test Master R&D Section 10 Conversion Formula**:
-   - Watch the live calculated output:
-     $$\text{Scenario Entrants} = \text{Seats} \times \left(\frac{\text{Enrol}}{100}\right) \times \left(\frac{\text{Comp}}{100}\right) \times \left(\frac{\text{Entry}}{100}\right)$$
-   - Review residual shortage, operational budget in INR, and instructor staffing ratios.
+### Tab 3: `Forecasts` (Chronological Holdout Benchmark & Alert Triage)
+1. **Chronological Holdout Benchmark Scorecard**: Select any target occupation/district and compare **3-Month Moving Average**, **Holt Linear Exponential Smoothing**, **Naïve Last Value**, **Linear Drift Baseline**, and **Candidate ARIMA** across strictly held-out periods (MAE, RMSE, MAPE)—with `NOT EVALUATED` displayed honestly when historical length is insufficient.
+2. **Early-Warning Intelligence Feed**: Filter alerts by type, distinguish `OBSERVED EVIDENCE` (`SHORTAGE_RISK`) from `FORWARD PROJECTION` (`PROJECTED_SHORTAGE_RISK`), and **Acknowledge** or **Escalate for Target Review** with audit logging.
 
-### Act 5: Governance, Connectors & Cryptographic Audit (Screen 5: Data & Reports)
-1. **Navigate to 'Data & Reports'**.
-2. **Inspect Connectors & Adapters**:
-   - View supported local CSV adapters (Job Postings, Institutional Training Supply).
-   - Inspect planned external connectors (NCS, e-Shram, NCVET/SIP) with transparent disclosures of required credentials and inactive live status.
-3. **Download Cryptographic Audit Trail**:
-   - Click **"Download Audit Trail (JSON)"** to export SHA-256 chained governance records verifying ingestion batches, human approvals, and model updates.
+### Tab 4: `Scenarios` (Decision Intelligence & Policy Simulator)
+1. **Evidence-Based Policy Recommendations**: Filter automated interventions (*All Recommendations*, *Seat Expansion*, *Curriculum Pivot*, *Apprenticeships*, *Data Audits*) and click **Simulate Seats →** to pre-populate the simulator.
+2. **Sanction Levers & Conversion Formula (Master R&D Section 10)**: Adjust sliders for additional sanctioned seats, enrolment take-up, course completion, and target role retention to observe live updates to:
+   $$\text{Scenario Entrants} = \text{Seats} \times \left(\frac{\text{Enrol}}{100}\right) \times \left(\frac{\text{Comp}}{100}\right) \times \left(\frac{\text{Entry}}{100}\right)$$
+   alongside the **Backend Arithmetic Audit Trail**, **Gap Closure Trajectory** chart, residual shortage, INR operational budget, and certified trainer requirements.
+
+### Tab 5: `Data & Reports` (Lineage, Live CSV Validator & Cryptographic Exports)
+1. **Source Lineage Registry & Connectors**: Review active synthetic demonstration feeds, local CSV adapters (Job Postings, Training Supply), and planned external connectors (NCS, e-Shram, NCVET/SIP) with explicit credential and status disclosures.
+2. **CSV Ingestion & Validator**: Upload or test a CSV against Schema 1.0 (`posting_id`, `raw_title`, `district_code`, `observation_date`, `vacancy_count`) for instant row-level FastAPI validation.
+3. **Evidence Exports**: Download the live **Maharashtra Pilot Tabular Analysis (CSV)**, preview the **District Skill Committee Brief**, or export the tamper-evident SHA-256 chained **Ingestion & Model Lineage Audit Log (JSON)**.
+
+### Tab 6 & Floating Drawer: `AI Assistant` (Grounded Q&A)
+1. Open the **`AI Assistant`** tab or the floating **`AI Intelligence Assistant LIVE`** drawer from any screen.
+2. Select a suggested inquiry (*Shortage Diagnostics*, *Time-Series Forecasting*, *Early Warning Signals*, *Skilling Interventions*) or ask natural-language questions answered strictly from the platform's data and models.
 
 ---
 
-## 7. Operational Roadmap & Planned Integrations
+## 8. Operational Roadmap & Planned Integrations
 
 - **Database**: Current deployment uses local SQLite with static thread pooling. Target production deployment will transition to PostgreSQL via SQLAlchemy.
 - **Geographic Scope**: Pilot data is restricted to Maharashtra districts (Pune, Nashik). Nationwide scaling requires state-level MIS adapter pipelines.
 - **Supply Sources**: Current supply estimates rely on synthetic synthesis of ITI/NCVET completions. Direct API integration with State Skill Missions (MSSDS) is designated for subsequent releases.
-- **Forecast Horizon**: The 3-month horizon is optimized for quarterly planning cycles; longer horizons require seasonal adjustment (SARIMA/Prophet) with >= 36 months of continuous data.
+- **Forecast Horizon**: The 3-month statistical holdout horizon is optimized for quarterly planning cycles; longer horizons require seasonal adjustment (SARIMA/Prophet) with >= 36 months of continuous data.
