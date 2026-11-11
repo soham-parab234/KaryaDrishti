@@ -193,3 +193,8 @@ cmd /c "npm --prefix frontend run build"
 - **Geographic Scope**: Pilot data is restricted to Maharashtra districts (Pune, Nashik). Nationwide scaling requires state-level MIS adapter pipelines.
 - **Supply Sources**: Current supply estimates rely on synthetic synthesis of ITI/NCVET completions. Direct API integration with State Skill Missions (MSSDS) is designated for subsequent releases.
 - **Forecast Horizon**: The 3-month statistical holdout horizon is optimized for quarterly planning cycles; longer horizons require seasonal adjustment (SARIMA/Prophet) with >= 36 months of continuous data.
+
+
+
+
+...................................................................................................................................................................
