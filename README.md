@@ -12,7 +12,7 @@ An evidence-based decision-support platform designed for state skill development
 > Demonstrates the complete end-to-end KaryaDrishti web experience—from role-based sign-in and live district/sector filtering through forecasting benchmarks, NCO-2015 normalization, training-seat policy simulation, CSV ingestion, audit exports, and the grounded AI assistant.
 
 
-https://github.com/user-attachments/assets/8ca2cdd5-cc4e-4a5d-8764-4f6e160ea0e4
+
 
 
 ### What the Website Walkthrough Covers
